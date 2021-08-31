@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">빵맵</string>
+    <string name="title_home">Home</string>
+    <string name="title_map">Map</string>
+    <string name="title_add">Add</string>
+    <string name="title_my_page">My Page</string>
+    <string name="home">홈</string>
+    <string name="map">지도</string>
+    <string name="add">카테고리</string>
+    <string name="my_page">마이페이지</string>
+    <string name="name_home">홈</string>
+    <string name="name_mypage">마이페이지</string>
+    <string name="name_map">빵지도</string>
+    <string name="name_add">빵집추가</string>
+    <string name="button">Button</string>
+    <string name="bbang1">bbang1</string>
+    <string name="banner1">banner1</string>
+    <string name="banner2">banner2</string>
+    <string name="format_map_click">format_map_click</string>
+    <string name="format_map_long_click">format_map_long_click</string>
+
+    <string-array name="spinner_data">
+        <item>One</item>
+        <item>Two</item>
+        <item>Three</item>
+        <item>Four</item>
+    </string-array>
+</resources>
