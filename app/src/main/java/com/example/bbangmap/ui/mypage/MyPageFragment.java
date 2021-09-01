@@ -10,21 +10,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.bbangmap.AddActivity;
+import com.example.bbangmap.InfoActivity;
 import com.example.bbangmap.QnaActivity;
 import com.example.bbangmap.R;
 
 import com.example.bbangmap.databinding.FragmentMypageBinding;
-import com.example.bbangmap.ui.mypage.MyPageViewModel;
 
 public class MyPageFragment extends Fragment {
 
@@ -68,23 +64,17 @@ public class MyPageFragment extends Fragment {
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 String strText = (String) parent.getItemAtPosition(position) ;
                 if(strText == "빵맵소개"){
-                    Toast toast = Toast.makeText(getActivity().getApplicationContext(), "빵맵소개로 이동", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.TOP, 0, 130);
-                    toast.show();
+              //      Toast toast = Toast.makeText(getActivity().getApplicationContext(), "빵맵소개로 이동", Toast.LENGTH_SHORT);
+              //      toast.setGravity(Gravity.TOP, 0, 130);
+              //      toast.show();
+                    Intent intent = new Intent(getActivity().getApplicationContext(), InfoActivity.class);
+                    startActivity(intent);
                 }else if(strText == "문의하기"){
                     Intent intent = new Intent(getActivity().getApplicationContext(), QnaActivity.class);
                     startActivity(intent);
                 }
             }
         }) ;
-
-
-
-
-
-
-
-
         return root;
     }
 

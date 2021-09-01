@@ -162,8 +162,6 @@ public class QnaActivity extends AppCompatActivity
         dialog.show();
     }
 
-
-
     //메뉴 뒤로가기 클릭 시 이전 화면으로 이동
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

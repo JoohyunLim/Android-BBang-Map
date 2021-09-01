@@ -41,6 +41,14 @@
             android:screenOrientation="portrait"
             android:label="문의하기">
         </activity>
+
+        <activity
+            android:name=".InfoActivity"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
+            android:label="빵맵소개">
+        </activity>
+
     </application>
 
 </manifest>

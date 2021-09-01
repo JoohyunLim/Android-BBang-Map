@@ -2,10 +2,12 @@ package com.example.bbangmap;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -16,6 +18,9 @@ import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+
+import com.example.bbangmap.ui.map.MapFragment;
 
 public class AddActivity extends AppCompatActivity {
     private PopupWindow mPopupWindow;
@@ -106,5 +111,17 @@ public class AddActivity extends AppCompatActivity {
             }
         });
         dialog.show();
+    }
+    //메뉴 뒤로가기 클릭 시 이전 화면으로 이동
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent parentIntent = NavUtils.getParentActivityIntent(this);
+                parentIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(parentIntent);
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

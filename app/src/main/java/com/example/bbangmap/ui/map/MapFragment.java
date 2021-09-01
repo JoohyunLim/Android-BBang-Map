@@ -36,6 +36,7 @@ import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
+import com.naver.maps.map.NaverMapSdk;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.UiSettings;
 import com.naver.maps.map.overlay.InfoWindow;
@@ -54,13 +55,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
     private FusedLocationSource locationSource;
     private NaverMap naverMap;
-    private MapView mapView;
+    private MapView mapView ;
 
-
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
     }
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -70,9 +70,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapView =  (MapView) root.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+
         locationSource =
                 new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
-
 
         final FloatingActionButton fab = binding.fab;
         fab.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +90,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 textView.setText(s);
             }
         });
-
  */
         return root;
     }
@@ -115,18 +114,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         super.onPause();
         mapView.onPause();
     }
-
     @Override
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
     }
+    /*
     @Override
     public void onStop(){
         super.onStop();
         mapView.onStop();
     }
-
+    */
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
     @Override
     public void onDestroy(){
         super.onDestroy();
@@ -137,7 +141,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         super.onLowMemory();
         mapView.onLowMemory();
     }
-
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
 
@@ -148,32 +151,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         naverMap.setLocationSource(locationSource);
         naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
 
-/*
-
-        String name = null;
-        int lat = 0;
-        int lng = 0;
-
-
-      
-        Handler handler = new Handler(Looper.getMainLooper());
-
-       
-            List<Marker> markers = new ArrayList<>();
-
-            for (int i = 0; i < 1000; ++i) {
-                Marker marker = new Marker();
-                setMarker(marker, name, lat, lng);
-                markers.add(marker);
-            }
-
-            handler.post(() -> {
-                // 메인 스레드
-                for (Marker marker : markers) {
-                    marker.setMap(naverMap);
-                }
-            });
-     */
 
         //용인, 수원
         Marker marker0 = new Marker();
@@ -228,24 +205,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         setMarker(marker100, "르뱅브래드", 37.751227793096916, 127.04184992023401);
         Marker marker101 = new Marker();
         setMarker(marker101, "팡도리노베이커리", 37.59724420471355, 127.09323142805576);
-        /*
-        marker1.setOnClickListener(o -> {
-            InfoWindow infoWindow1 = new InfoWindow();
 
-            infoWindow1.setAdapter(new InfoWindow.DefaultTextAdapter(getActivity().getApplication())
-            {
-                @NonNull
-                @Override
-                public CharSequence getText(@NonNull InfoWindow infoWindow)
-                {
-                    return marker1.getCaptionText();
-                }
-            });
-            infoWindow1.open(marker1);
-
-            return true;
-        });
-*/
     }
 
     public void onRequestPermissionResult(int requestCode,
@@ -261,4 +221,5 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 requestCode, permissions, grantResults
         );
     }
+
 }
