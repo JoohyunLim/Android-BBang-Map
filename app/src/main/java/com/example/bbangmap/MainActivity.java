@@ -1,47 +1,92 @@
 package com.example.bbangmap;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.example.bbangmap.ui.map.MapFragment;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import com.example.bbangmap.databinding.ActivityMainBinding;
-import com.naver.maps.geometry.LatLng;
-import com.naver.maps.map.LocationTrackingMode;
-import com.naver.maps.map.MapView;
-import com.naver.maps.map.NaverMap;
-import com.naver.maps.map.NaverMapSdk;
-import com.naver.maps.map.OnMapReadyCallback;
-import com.naver.maps.map.overlay.Marker;
-import com.naver.maps.map.util.FusedLocationSource;
+import com.kakao.auth.ApiErrorCode;
+import com.kakao.auth.ISessionCallback;
+import com.kakao.auth.Session;
+import com.kakao.network.ErrorResult;
+import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.MeV2ResponseCallback;
+import com.kakao.usermgmt.response.MeV2Response;
+import com.kakao.util.exception.KakaoException;
 
-public class MainActivity extends AppCompatActivity
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+public class MainActivity extends AppCompatActivity implements ISessionCallback
 {
+
     private ActivityMainBinding binding;
-    private BottomNavigationView mBtmView;
-    private int mMenuId;
+    private KaKaoCallBack kaKaoCallBack;
+
+
+    //private BottomNavigationView mBtmView;
+    //private boolean LoginState = false;
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        NaverMapSdk.getInstance(this).setClient(
-                new NaverMapSdk.NaverCloudPlatformClient("yamwqkg05h"));
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+
+    //    NaverMapSdk.getInstance(this).setClient(
+    //            new NaverMapSdk.NaverCloudPlatformClient("yamwqkg05h"));
+    //    Log.d("GET_KEYHASH", getKeyHash(MainActivity.this));
+
+        //binding = ActivityMainBinding.inflate(getLayoutInflater());
+        //setContentView(binding.getRoot());
+
+
+        hideSystemUI();
+       // setContentView(R.layout.login);
+       // Button loginButton = (Button) this.findViewById(R.id.loginButton);
+
+        //kaKaoCallBack = new KaKaoCallBack();
+        //Session.getCurrentSession().addCallback(kaKaoCallBack);
+        Session.getCurrentSession().addCallback(this);
+        Session.getCurrentSession().checkAndImplicitOpen();
+        setContentView(R.layout.login);
+
+     //   loginButton.setOnClickListener(new View.OnClickListener() {
+         //   @Override
+        //    public void onClick(View v) {
+          //      Toast.makeText(getApplicationContext(),"카카오 로그인 버튼 클릭!",Toast.LENGTH_SHORT).show();
+                //loginButton.performClick();
+          //  }
+      //  });
+
+
+        /*
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), SecondActivity.class);
+                startActivity(intent);
+            }
+        });
+
+         */
+/*
+        //Login 완료면
+        if(LoginState == true){
+
+        showSystemUI();
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
@@ -56,6 +101,103 @@ public class MainActivity extends AppCompatActivity
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
+        } */
     }
+
+    public void kakaoError(String msg){
+        Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
+            super.onActivityResult(requestCode, resultCode, data);
+            return;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Session.getCurrentSession().removeCallback(kaKaoCallBack);
+    }
+
+
+
+
+
+
+
+
+    public void onSessionOpened() {
+        UserManagement.getInstance().me(new MeV2ResponseCallback() {
+            @Override
+            public void onFailure(ErrorResult errorResult) {
+                int result = errorResult.getErrorCode();
+
+                if (result == ApiErrorCode.CLIENT_ERROR_CODE) kakaoError("네트워크 연결이 불안정합니다. 다시 시도해 주세요.");
+                else kakaoError("로그인 도중 오류가 발생했습니다.");
+            }
+
+            @Override
+            public void onSessionClosed(ErrorResult errorResult) {
+                kakaoError("세션이 닫혔습니다. 다시 시도해 주세요.");
+            }
+
+            @Override
+            public void onSuccess(MeV2Response result) {
+                Log.d("닉네임 확인 : ",result.getNickname()); //닉네임
+                Intent intent = new Intent(getApplicationContext(), SecondActivity.class);
+                intent.putExtra("name", result.getNickname());
+                startActivity(intent);
+                finish();
+
+                //Log.d("이메일 확인 : ",result.getKakaoAccount().getEmail()); //이메일
+                //Log.d("이미지 확인 : ",result.getThumbnailImagePath()); //프로필 사진
+            }
+        });
+    }
+
+    @Override
+    public void onSessionOpenFailed (KakaoException e){
+        kakaoError("로그인 도중 오류가 발생했습니다. 인터넷 연결을 확인해주세요.");
+    }
+
+
+/*
+    //카카오로그인API연동을위한KEYHASH구하기
+    public static String getKeyHash(final Context context) {
+        PackageManager pm = context.getPackageManager();
+        try {
+            PackageInfo packageInfo = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
+            if (packageInfo == null)
+                return null;
+
+            for (Signature signature : packageInfo.signatures) {
+                try {
+                    MessageDigest md = MessageDigest.getInstance("SHA");
+                    md.update(signature.toByteArray());
+                    return android.util.Base64.encodeToString(md.digest(), android.util.Base64.NO_WRAP);
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    } */
+    void hideSystemUI() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN);
+    }
+
 }

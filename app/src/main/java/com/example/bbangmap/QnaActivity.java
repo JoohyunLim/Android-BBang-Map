@@ -117,7 +117,7 @@ public class QnaActivity extends AppCompatActivity
 
                 //이메일전송
                 SendMail mailServer = new SendMail();
-                int ret = mailServer.sendSecurityCode(getApplicationContext(), "jjuha_@naver.com",
+                int ret = mailServer.sendSecurityCode(getApplicationContext(), "jjuha.dev@gmail.com",
                         email.getText().toString(), qnatext.getText().toString());
 
 

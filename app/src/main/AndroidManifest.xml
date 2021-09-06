@@ -10,7 +10,21 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_bread_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.BBangMap">
+        android:theme="@style/Theme.BBangMap"
+        android:name = ".KakaoSDKInit">
+
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="@string/kakaoApi" />
+
+        <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:host="oauth" android:scheme="kakaod4781d1ac5afbae6894685a55e64ccbc" />
+            </intent-filter></activity>
 
         <activity
             android:name=".SplashActivity"
@@ -27,7 +41,12 @@
             android:screenOrientation="portrait"
             android:label="@string/app_name">
         </activity>
-
+        <activity
+            android:name=".SecondActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name">
+        </activity>
         <activity
             android:name=".AddActivity"
             android:parentActivityName=".MainActivity"
@@ -48,6 +67,7 @@
             android:screenOrientation="portrait"
             android:label="빵맵소개">
         </activity>
+
 
     </application>
 

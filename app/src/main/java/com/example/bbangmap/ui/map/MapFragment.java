@@ -119,13 +119,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
     }
-    /*
+/*
     @Override
     public void onStop(){
         super.onStop();
         mapView.onStop();
     }
-    */
+*/
     @Override
     public void onResume() {
         super.onResume();

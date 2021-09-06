@@ -2,6 +2,7 @@ package com.example.bbangmap.ui.mypage;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -17,10 +19,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.bbangmap.InfoActivity;
+import com.example.bbangmap.MainActivity;
 import com.example.bbangmap.QnaActivity;
 import com.example.bbangmap.R;
 
 import com.example.bbangmap.databinding.FragmentMypageBinding;
+import com.kakao.sdk.user.UserApiClient;
+import com.kakao.sdk.user.model.Account;
+import com.kakao.usermgmt.UserManagement;
 
 public class MyPageFragment extends Fragment {
 
@@ -30,6 +36,8 @@ public class MyPageFragment extends Fragment {
     static final String[] LIST_MENU2 = {"빵맵소개","문의하기"} ;
     static final String[] LIST_MENU3 = {"로그아웃"} ;
 
+
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         myPageViewModel =
@@ -37,16 +45,6 @@ public class MyPageFragment extends Fragment {
 
         binding = FragmentMypageBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-/*
-        final TextView textView = binding.textMyPage;
-        myPageViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-
- */
 
         ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, LIST_MENU) ;
         ArrayAdapter adapter2 = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, LIST_MENU2) ;
@@ -75,6 +73,8 @@ public class MyPageFragment extends Fragment {
                 }
             }
         }) ;
+
+
         return root;
     }
 

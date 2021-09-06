@@ -18,6 +18,8 @@
     <string name="banner2">banner2</string>
     <string name="format_map_click">format_map_click</string>
     <string name="format_map_long_click">format_map_long_click</string>
+    <string name="kakaoApi">d4781d1ac5afbae6894685a55e64ccbc</string>
+
 
     <string-array name="spinner_data">
         <item>One</item>
