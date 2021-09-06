@@ -1,3 +1,4 @@
+/*
 package com.example.bbangmap;
 
 import android.app.Activity;
@@ -47,3 +48,5 @@ public class KaKaoCallBack implements ISessionCallback   {
         mainActivity.kakaoError("로그인 도중 오류가 발생했습니다. 인터넷 연결을 확인해주세요.");
     }
 }
+
+ */

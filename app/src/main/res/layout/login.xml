@@ -10,7 +10,7 @@
         android:id="@+id/imageView4"
         android:layout_width="180dp"
         android:layout_height="180dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="135dp"
         android:background="#00FFFFFF"
         android:backgroundTint="#00FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,5 +31,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"></com.kakao.usermgmt.LoginButton>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center"
+        android:text="WELCOME TO\nBBANGMAP !"
+        android:textColor="#1E1E1E"
+        android:textSize="38sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,7 +24,9 @@ import com.example.bbangmap.MainActivity;
 import com.example.bbangmap.QnaActivity;
 import com.example.bbangmap.R;
 
+import com.example.bbangmap.SecondActivity;
 import com.example.bbangmap.databinding.FragmentMypageBinding;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.Account;
 import com.kakao.usermgmt.UserManagement;
@@ -45,6 +48,10 @@ public class MyPageFragment extends Fragment {
 
         binding = FragmentMypageBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        TextView name = binding.name;
+        name.setText(SecondActivity.name);
+
 
         ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, LIST_MENU) ;
         ArrayAdapter adapter2 = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, LIST_MENU2) ;

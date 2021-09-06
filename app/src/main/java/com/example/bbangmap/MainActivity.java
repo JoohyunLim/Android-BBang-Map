@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.example.bbangmap.databinding.ActivityMainBinding;
 import com.kakao.auth.ApiErrorCode;
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements ISessionCallback
 {
 
     private ActivityMainBinding binding;
-    private KaKaoCallBack kaKaoCallBack;
+    //private KaKaoCallBack kaKaoCallBack;
 
 
     //private BottomNavigationView mBtmView;
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements ISessionCallback
         //setContentView(binding.getRoot());
 
 
-        hideSystemUI();
+
        // setContentView(R.layout.login);
        // Button loginButton = (Button) this.findViewById(R.id.loginButton);
 
@@ -61,7 +62,12 @@ public class MainActivity extends AppCompatActivity implements ISessionCallback
         //Session.getCurrentSession().addCallback(kaKaoCallBack);
         Session.getCurrentSession().addCallback(this);
         Session.getCurrentSession().checkAndImplicitOpen();
+
+
+        hideSystemUI();
         setContentView(R.layout.login);
+
+
 
      //   loginButton.setOnClickListener(new View.OnClickListener() {
          //   @Override
@@ -119,14 +125,8 @@ public class MainActivity extends AppCompatActivity implements ISessionCallback
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Session.getCurrentSession().removeCallback(kaKaoCallBack);
+        Session.getCurrentSession().removeCallback(this);
     }
-
-
-
-
-
-
 
 
     public void onSessionOpened() {
@@ -147,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements ISessionCallback
             @Override
             public void onSuccess(MeV2Response result) {
                 Log.d("닉네임 확인 : ",result.getNickname()); //닉네임
+
                 Intent intent = new Intent(getApplicationContext(), SecondActivity.class);
                 intent.putExtra("name", result.getNickname());
                 startActivity(intent);
