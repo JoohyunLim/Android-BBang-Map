@@ -1,16 +1,25 @@
 package com.example.bbangmap.ui.mypage;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,11 +34,13 @@ import com.example.bbangmap.QnaActivity;
 import com.example.bbangmap.R;
 
 import com.example.bbangmap.SecondActivity;
+import com.example.bbangmap.SendMail;
 import com.example.bbangmap.databinding.FragmentMypageBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.Account;
 import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
 public class MyPageFragment extends Fragment {
 
@@ -81,13 +92,73 @@ public class MyPageFragment extends Fragment {
             }
         }) ;
 
+        listview3.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View v, int position, long id) {
+                String strText = (String) parent.getItemAtPosition(position) ;
+                if(strText == "로그아웃"){
+                    showAlertDialogButtonClicked(v);
+
+
+
+                }
+            }
+        }) ;
 
         return root;
+    }
+
+    //로그아웃 확인 팝업
+    public void showAlertDialogButtonClicked(View view) {
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                .permitDiskReads()
+                .permitDiskWrites()
+                .permitNetwork().build());
+
+        // setup the alert builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("로그아웃 하시겠습니까?");
+
+        builder.setPositiveButton("네", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+
+                //로그아웃하기
+                 Toast toast = Toast.makeText(getActivity().getApplicationContext(), "정상적으로 로그아웃 되었습니다.", Toast.LENGTH_SHORT);
+                 toast.setGravity(Gravity.TOP, 0, 130);
+                 toast.show();
+                 logOut();
+
+                 dialog.dismiss();
+            }
+        });
+
+        builder.setNegativeButton("아니오", null);
+        AlertDialog dialog = builder.create();
+
+        dialog.setOnShowListener( new DialogInterface.OnShowListener() {
+            @Override public void onShow(DialogInterface arg0) {
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+            }
+        });
+        dialog.show();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    public void logOut(){
+        UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
+            @Override
+            public void onCompleteLogout() {
+                Intent intent = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
     }
 }

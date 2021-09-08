@@ -55,10 +55,14 @@ public class SecondActivity extends AppCompatActivity
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setDisplayUseLogoEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            
-            //username 가져오기
+
+
+        //GET USERNAME
         Intent intent = getIntent();
         name = intent.getStringExtra("name");
+        Toast toast = Toast.makeText(getApplicationContext(), name+"님, 반갑습니다!", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP, 0, 130);
+        toast.show();
 
     }
 
