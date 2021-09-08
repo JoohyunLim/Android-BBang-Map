@@ -98,9 +98,6 @@ public class MyPageFragment extends Fragment {
                 String strText = (String) parent.getItemAtPosition(position) ;
                 if(strText == "로그아웃"){
                     showAlertDialogButtonClicked(v);
-
-
-
                 }
             }
         }) ;

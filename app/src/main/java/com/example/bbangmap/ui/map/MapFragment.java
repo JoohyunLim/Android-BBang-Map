@@ -74,6 +74,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         locationSource =
                 new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
 
+        Spinner spinner = (Spinner) root.findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.map_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+
+
+
+
         final FloatingActionButton fab = binding.fab;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

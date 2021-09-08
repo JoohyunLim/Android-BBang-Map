@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:elevation="20dp"
     tools:context=".ui.map.MapFragment">
 
     <com.naver.maps.map.MapView
+        android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id = "@+id/map">
+        android:layout_height="match_parent">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
@@ -27,7 +28,24 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:rippleColor="#000000"
             app:tint="@null" />
+
     </com.naver.maps.map.MapView>
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="135dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/txtfield"
+        android:elevation="12dp"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        android:popupBackground="@drawable/txtfield"
+        android:popupElevation="12dp"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     <!--
     <fragment android:layout_width="match_parent"
         android:layout_height="match_parent"
