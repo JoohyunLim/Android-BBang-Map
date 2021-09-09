@@ -42,7 +42,7 @@ public class AddActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(AddActivity.this);
                 builder.setIcon(R.drawable.icon);
                 builder.setTitle("신청 유의사항");
-                builder.setMessage("*반려 대상*\n\n1) 포털 사이트에 등록되어 있지 않아 정보 확인이 어려운 빵집\n\n2) 대형 프랜차이즈 빵집 (단, 지역을 대표하는 빵집, 특색 있는 지점 등은 예외적으로 등록 가능)\n\n3) 빵집보다 카페에 가까운 가게 (단, 베이커리카페는 등록 가능)\n\n4) 대한민국에 위치하지 않은 빵집\n");
+                builder.setMessage("*반려 대상*\n\n1) 포털 사이트에 등록되어 있지 않아 정보 확인이 어려운 가게\n\n2) 대형 프랜차이즈 가게 (단, 지역을 대표하는 빵집, 특색 있는 지점 등은 예외적으로 등록 가능)\n\n3) 빵집보다 카페에 가까운 가게 (단, 베이커리카페는 등록 가능)\n\n4) 해외에 위치한 가게\n");
                 builder.setPositiveButton("확인", null);
 
                 AlertDialog dialog = builder.create();

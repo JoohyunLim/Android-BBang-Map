@@ -40,7 +40,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private MapView mapView ;
     private AppDatabase db;
     private BakeryDao mBakeryDao;
-    private ArrayList<Marker> mMarkerArray = new ArrayList<Marker>();
+    private ArrayList<Bakery> globalBakeryList;
+
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -75,20 +76,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+//        //저장빵집DB
+//        db = Room.databaseBuilder(getActivity().getApplicationContext(), AppDatabase.class, "bakery-db")
+//                .fallbackToDestructiveMigration()
+//                .allowMainThreadQueries()
+//                .build();
+//        mBakeryDao = db.bakeryDao();
 
-        //빵집DB
-        db = Room.databaseBuilder(getActivity().getApplicationContext(), AppDatabase.class, "bakery-db")
-                .fallbackToDestructiveMigration()
-                .allowMainThreadQueries()
-                .build();
-        mBakeryDao = db.bakeryDao();
-
-        //빵집추가
-        addBakeryToDB();
-
-        //빵집삭제
-        //deleteBakeryFromDB(3);
-        //mBakeryDao.deleteAll();
 
         return root;
     }
@@ -105,8 +99,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         marker.setAlpha(1f);
         //마커 위치
         marker.setPosition(new LatLng(lat, lng));
-        //마커리스트에 추가
-        mMarkerArray.add(marker);
         //마커 표시
         marker.setMap(naverMap);
     }
@@ -120,13 +112,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
     }
-/*
-    @Override
-    public void onStop(){
-        super.onStop();
-        mapView.onStop();
-    }
-*/
     @Override
     public void onResume() {
         super.onResume();
@@ -152,14 +137,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         naverMap.setLocationSource(locationSource);
         naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
 
-        //빵집 리스트 마커 전부 추가
-        List<Bakery> bakeryList = mBakeryDao.getAll();
-        for (int i = 0;  i < bakeryList.size() ; i++) {
-            Log.d("###########TEST", bakeryList.get(i).getName());
-            Marker marker= new Marker();
-            setMarker(marker, bakeryList.get(i).getName(), bakeryList.get(i).getLat(),bakeryList.get(i).getLng());
+        globalBakeryList = new ArrayList<Bakery>();
+        setBakeryList();
+
+        for (int i = 0; i < globalBakeryList.size(); i++) {
+            Marker marker = new Marker();
+            setMarker(marker, globalBakeryList.get(i).getName(),
+                    globalBakeryList.get(i).getLat(),globalBakeryList.get(i).getLng()
+            );
         }
 
+
+
+        //빵집 리스트 마커 전부 추가
+//        List<Bakery> bakeryList = mBakeryDao.getAll();
+//        for (int i = 0;  i < bakeryList.size() ; i++) {
+//            //Log.d("###########TEST", bakeryList.get(i).getName());
+//            Marker marker= new Marker();
+//            setMarker(marker, bakeryList.get(i).getName(), bakeryList.get(i).getLat(),bakeryList.get(i).getLng());
+//        }
     }
 
     public void onRequestPermissionResult(int requestCode,
@@ -176,37 +172,112 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         );
     }
 
-    //BAKERY 삽입
-    public void addBakeryToDB(){
-        //  mBakeryDao.insert(new Bakery("디어필립", "경기 용인시 수지구 수지로296번길 51-5",37.293913587307586, 127.05516634679148));
-        //  mBakeryDao.insert(new Bakery("본누벨베이커리", "경기도 용인시 수지구 수지로 20", 37.30483867346377, 127.07520066093477));
-//        mBakeryDao.insert(new Bakery("오봉베르", "경기 수원시 영통구 센트럴파크로127번길 142", 37.293913587307586, 127.05516634679148));
-//        mBakeryDao.insert(new Bakery("씨투베이커리 본점", "경기 용인시 수지구 성복2로 166", 37.317721439210494, 127.0684622693322));
-//        mBakeryDao.insert(new Bakery("르디투어", "경기 수원시 영통구 이의동 1222-2", 37.3121372340001, 127.05494489737711));
-//        mBakeryDao.insert(new Bakery("하구영베이커리", "경기 용인시 수지구 풍덕천로96번길 3-4 1층", 37.321315195444676, 127.09361943951407));
-//        mBakeryDao.insert(new Bakery("올바른단팥빵&고로케", "경기 용인시 기흥구 보정로 115 우영프라자", 37.31990920240392, 127.11530384331465));
-//        mBakeryDao.insert(new Bakery("아일랜드15", "경기 용인시 수지구 광교호수로378번길 25", 37.29636639148425, 127.08036898380995));
-//        mBakeryDao.insert(new Bakery("델리봉봉", "경기 용인시 수지구 광교중앙로295번길 3", 37.29641146855036, 127.06829652117655));
-//        mBakeryDao.insert(new Bakery("뺑오르방 광교카페거리점", "경기 수원시 영통구 센트럴파크로128번길 105", 37.29489629080948, 127.05667296040775));
-//        mBakeryDao.insert(new Bakery("몽소베이커리앤카페", "경기 수원시 영통구 대학4로 9 리치프라자2 1층", 37.30033387016423, 127.04580794992314));
-//        mBakeryDao.insert(new Bakery("고당팜베이커리", "경기 수원시 영통구 센트럴파크로 6", 37.285846787875485, 127.06369200837575));
-//        mBakeryDao.insert(new Bakery("하얀풍차제과 매탄점", "경기 수원시 영통구 인계로189번길 7 종합상가", 37.266185367722784, 127.03815651355539));
-//        mBakeryDao.insert(new Bakery("삐에스몽테 제빵소", "경기 수원시 권선구 오목천로 149", 37.24528578728469, 126.97673517421977));
-//        mBakeryDao.insert(new Bakery("브레드쿠쿰", "경기 용인시 기흥구 흥덕4로 75", 37.27843452175131, 127.09009122777213));
-//        mBakeryDao.insert(new Bakery("칼리오페", "경기 용인시 처인구 성산로170번길 23-1", 37.24813566780824, 127.19283833369533));
-//        mBakeryDao.insert(new Bakery("옐로오븐", "경기 용인시 수지구 수지로 64", 37.30881456607982, 127.07613786358962));
-//        mBakeryDao.insert(new Bakery("까미노빵집", "서울 강북구 4.19로 61", 37.64611799979539, 127.0078847553202));
-//        mBakeryDao.insert(new Bakery("패멩베이커리", "서울 도봉구 도봉로116길 4", 37.64801175237896, 127.0356465450381));
-//        mBakeryDao.insert(new Bakery("글림", "서울 도봉구 도봉로118길 6-8 1층", 37.64883904901911, 127.03516165273065));
-//        mBakeryDao.insert(new Bakery("Bun418", "서울 강북구 오패산로 414", 37.637570703698344, 127.02634331990289));
-//        mBakeryDao.insert(new Bakery("브래드마티스", "서울 성북구 숭인로 50", 37.61241878229841, 127.02726301155154));
-//        mBakeryDao.insert(new Bakery("르뱅브래드", "경기 의정부시 신촌로63번길 20-4 1층", 37.751227793096916, 127.04184992023401));
-    }
+//    //BAKERY 삽입
+//    public void addBakeryToDB(){
+////mBakeryDao.insert(new Bakery("디어필립", "경기도 용인시 수지구 수지로296번길 51-5", 37.321672038986314, 127.09446862858634));
+//   }
 
-    //BAKERY 삭제
-    public void deleteBakeryFromDB(int ID){
-        Bakery deleteBakery = new Bakery("","",0,0);
-        deleteBakery.setId(ID); //n번 아이디의 데이터 삭제
-        mBakeryDao.delete(deleteBakery);
+//    //BAKERY 삭제
+//    public void deleteBakeryFromDB(int ID){
+//        Bakery deleteBakery = new Bakery("","",0,0);
+//        deleteBakery.setId(ID); //n번 아이디의 데이터 삭제
+//        mBakeryDao.delete(deleteBakery);
+//    }
+
+
+    public void setBakeryList(){
+
+        globalBakeryList.add(new Bakery("디어필립", "경기도 용인시 수지구 수지로296번길 51-5", 37.321672038986314, 127.09446862858634));
+        globalBakeryList.add(new Bakery("본누벨베이커리", "경기도 용인시 수지구 수지로 20", 37.30483867346377, 127.07520066093477));
+        globalBakeryList.add(new Bakery("오봉베르", "경기도 수원시 영통구 센트럴파크로127번길 142", 37.293913587307586, 127.05516634679148));
+        globalBakeryList.add(new Bakery("씨투베이커리 본점", "경기도 용인시 수지구 성복2로 166", 37.317721439210494, 127.0684622693322));
+        globalBakeryList.add(new Bakery("르디투어", "경기도 수원시 영통구 이의동 1222-2", 37.3121372340001, 127.05494489737711));
+        globalBakeryList.add(new Bakery("하구영베이커리", "경기도 용인시 수지구 풍덕천로96번길 3-4 1층", 37.321315195444676, 127.09361943951407));
+        globalBakeryList.add(new Bakery("올바른단팥빵&고로케", "경기도 용인시 기흥구 보정로 115 우영프라자", 37.31990920240392, 127.11530384331465));
+        globalBakeryList.add(new Bakery("아일랜드15", "경기도 용인시 수지구 광교호수로378번길 25", 37.29636639148425, 127.08036898380995));
+        globalBakeryList.add(new Bakery("델리봉봉", "경기도 용인시 수지구 광교중앙로295번길 3", 37.29641146855036, 127.06829652117655));
+        globalBakeryList.add(new Bakery("뺑오르방 광교카페거리점", "경기도 수원시 영통구 센트럴파크로128번길 105", 37.29489629080948, 127.05667296040775));
+        globalBakeryList.add(new Bakery("몽소베이커리앤카페", "경기도 수원시 영통구 대학4로 9 리치프라자2 1층", 37.30033387016423, 127.04580794992314));
+        globalBakeryList.add(new Bakery("고당팜베이커리", "경기도 수원시 영통구 센트럴파크로 6", 37.285846787875485, 127.06369200837575));
+        globalBakeryList.add(new Bakery("하얀풍차제과 매탄점", "경기도 수원시 영통구 인계로189번길 7 종합상가", 37.266185367722784, 127.03815651355539));
+        globalBakeryList.add(new Bakery("삐에스몽테 제빵소", "경기도 수원시 권선구 오목천로 149", 37.24528578728469, 126.97673517421977));
+        globalBakeryList.add(new Bakery("브레드쿠쿰", "경기도 용인시 기흥구 흥덕4로 75", 37.27843452175131, 127.09009122777213));
+        globalBakeryList.add(new Bakery("칼리오페", "경기도 용인시 처인구 성산로170번길 23-1", 37.24813566780824, 127.19283833369533));
+        globalBakeryList.add(new Bakery("옐로오븐", "경기도 용인시 수지구 수지로 64", 37.30881456607982, 127.07613786358962));
+        globalBakeryList.add(new Bakery("까미노빵집", "서울특별시 강북구 4.19로 61", 37.64611799979539, 127.0078847553202));
+        globalBakeryList.add(new Bakery("히피스베이글", "서울특별시 강북구 우이동 삼양로 528", 37.65004735195512, 127.01362770925707));
+        globalBakeryList.add(new Bakery("보나뻬띠브레드", "서울특별시 도봉구 쌍문동 삼양로 574-29 1층", 37.65457317600603, 127.01375597521117));
+        globalBakeryList.add(new Bakery("패멩베이커리", "서울특별시 도봉구 도봉로116길 4", 37.64801175237896, 127.0356465450381));
+        globalBakeryList.add(new Bakery("글림", "서울특별시 도봉구 도봉로118길 6-8 1층", 37.64883904901911, 127.03516165273065));
+        globalBakeryList.add(new Bakery("Bun418", "서울특별시 강북구 오패산로 414", 37.637570703698344, 127.02634331990289));
+        globalBakeryList.add(new Bakery("나폴레옹과자점 본점", "서울특별시 성북구 성북동 성북로 7", 37.58892060060636, 127.00518662905147));
+        globalBakeryList.add(new Bakery("오보록", "서울특별시 성북구 성북동 성북로 63", 37.59285887557508, 127.00151448139837));
+        globalBakeryList.add(new Bakery("블랑제메종 북악", "서울특별시 성북구 성북동 성북로 156", 37.59470703220529, 126.99240233843328));
+        globalBakeryList.add(new Bakery("성북동빵공장", "서울특별시 성북구 성북동 대사관로 40", 37.59583654066862, 126.98843484890078));
+        globalBakeryList.add(new Bakery("슬로우브레드파파", "서울특별시 성북구 보문로30나길 29", 37.590682515157674, 127.0203006055725));
+        globalBakeryList.add(new Bakery("브래드마티스", "서울특별시 성북구 숭인로 50", 37.61241878229841, 127.02726301155154));
+        globalBakeryList.add(new Bakery("르뱅브래드", "경기도 의정부시 신촌로63번길 20-4 1층", 37.751227793096916, 127.04184992023401));
+        globalBakeryList.add(new Bakery("러스트 베이커리", "서울특별시 영등포구 문래동 경인로79길 15", 37.513159290625275, 126.8937028765799));
+        globalBakeryList.add(new Bakery("인포메이션카페", "서울특별시 강남구 역삼1동 역삼로 121", 37.4940369637935, 127.03264422389768));
+        globalBakeryList.add(new Bakery("베이커리 무이", "서울특별시 용산구 원효로1가 28-1", 37.53964273135676, 126.96686455694795));
+        globalBakeryList.add(new Bakery("베떼엠", "경기도 성남시 분당구 수내동 33-2", 37.377319667665446, 127.11579384775956));
+        globalBakeryList.add(new Bakery("비파티세리", "서울특별시 강남구 신사동 압구정로14길 36", 37.5219794805256, 127.0232459031536));
+        globalBakeryList.add(new Bakery("에뚜왈 연남점", "서울특별시 마포구 연남동 성미산로 170", 37.56410951155832, 126.92456518465477));
+        globalBakeryList.add(new Bakery("빵길따라 연남동", "서울특별시 마포구 연남동 227-2", 37.561810131625684, 126.92692387472106));
+        globalBakeryList.add(new Bakery("앙토낭카렘", "경기도 성남시 분당구 서현동 306-2", 37.37392851963139, 127.13682156921074));
+        globalBakeryList.add(new Bakery("데조로의집", "경기도 성남시 분당구 삼평동 719", 37.40394703532899, 127.11620055805162));
+        globalBakeryList.add(new Bakery("김영모과자점 도곡타워점", "서울특별시 강남구 도곡2동 언주로30길 10", 37.488150246604505, 127.05287061162215));
+        globalBakeryList.add(new Bakery("팡도리노", "서울특별시 중랑구 망우동 용마산로115길 127", 37.59717817992555, 127.0932093238178));
+        globalBakeryList.add(new Bakery("초이고야", "서울특별시 서초구 방배동 방배로20길 11", 37.48585794281395, 126.99565851777467));
+        globalBakeryList.add(new Bakery("소울브레드", "서울특별시 서초구 우면동 59", 37.471308168334794, 127.02425087239124));
+        globalBakeryList.add(new Bakery("루엘드파리", "서울특별시 서초구 서초중앙로 18 서초쌍용플래티넘 112호", 37.483975726750465, 127.01721601970715));
+        globalBakeryList.add(new Bakery("타르틴 베이커리 서울 한남점", "서울특별시 용산구 한남동 한남대로18길 22", 37.53463961802338, 127.00879353445592));
+        globalBakeryList.add(new Bakery("꼼다비뛰드", "서울특별시 강남구 역삼동 강남대로110길 62", 37.50334691903085, 127.02951363147028));
+        globalBakeryList.add(new Bakery("브레드숨", "서울특별시 동작구 노량진1동 노량진로18길 37", 37.51233571154324, 126.95178546259604));
+        globalBakeryList.add(new Bakery("효자베이커리", "서울특별시 종로구 통인동 필운대로 54", 37.58091954586318, 126.96865952755645));
+        globalBakeryList.add(new Bakery("뺑드에코", "서울특별시 성동구 성수동2가 연무장길 44 2층", 37.54260909019213, 127.05401432800868));
+        globalBakeryList.add(new Bakery("폴앤폴리나", "서울특별시 서대문구 연희동 연희로11길 56", 37.56886384707141, 126.92901544741055));
+        globalBakeryList.add(new Bakery("아티장베이커스 한남점", "서울특별시 용산구 한남동 한남대로18길 26", 37.53454794677909, 127.00861223858425));
+        globalBakeryList.add(new Bakery("오월의 종", "서울특별시 용산구 한남동 이태원로 229", 37.53576353486479, 126.99920017189761));
+        globalBakeryList.add(new Bakery("어글리 베이커리", "서울특별시 마포구 망원1동 월드컵로13길 73 1층", 37.55500894075755, 126.90604320161343));
+        globalBakeryList.add(new Bakery("투떰즈업", "서울특별시 마포구 망원1동 월드컵로19길 71", 37.5543219497524, 126.90717888319982));
+        globalBakeryList.add(new Bakery("파롤앤랑그", "서울특별시 마포구 연남동 성미산로29안길 8", 37.564950100634796, 126.92283223307035));
+        globalBakeryList.add(new Bakery("피터팬 1978", "서울특별시 서대문구 연희동 90-5", 37.5693571103465, 126.93170160863491));
+        globalBakeryList.add(new Bakery("독일빵집", "서울특별시 서대문구 연희동 132-20", 37.5676048146701, 126.93000261924131));
+        globalBakeryList.add(new Bakery("금양식방", "서울특별시 서대문구 연희동 717-31 1층", 37.576823313477085, 126.93091149278153));
+        globalBakeryList.add(new Bakery("뉘블랑쉬", "서울특별시 서대문구 연희동 연희로15길 52 지층", 37.56969530661221, 126.92989352702283));
+        globalBakeryList.add(new Bakery("만동제과", "서울특별시 서대문구 연희로 32", 37.56150580384586, 126.9272526779984));
+        globalBakeryList.add(new Bakery("바이레인", "서울특별시 성동구 성수동1가 왕십리로14길 12", 37.549085247137036, 127.0450917683186));
+        globalBakeryList.add(new Bakery("빵의정석", "서울특별시 성동구 성수동1가 서울숲2길 45", 37.54640450806095, 127.04343352195345));
+        globalBakeryList.add(new Bakery("에르제", "서울특별시 성동구 성수2가3동 277-56", 37.54398108136744, 127.05896713136775));
+        globalBakeryList.add(new Bakery("태극당", "서울특별시 중구 장충동 동호로24길 7", 37.55952115769714, 127.00503389245561));
+        globalBakeryList.add(new Bakery("라운드앤드", "서울특별시 중구 정동 정동길 35 두비빌딩", 37.56602555703956, 126.97235492872899));
+        globalBakeryList.add(new Bakery("르빵 명동성당점", "서울특별시 중구 명동2가 명동길 74", 37.56412148757096, 126.98664253235471));
+        globalBakeryList.add(new Bakery("쟝블랑제리 이수점", "서울특별시 동작구 동작대로23길 8", 37.484348370397115, 126.98131278184597));
+        globalBakeryList.add(new Bakery("쟝블랑제리", "서울특별시 관악구 낙성대역길 8", 37.47706045254908, 126.96192799579167));
+        globalBakeryList.add(new Bakery("아티장베이커스 본점", "서울특별시 강남구 논현로105길 8", 37.506053480717505, 127.03363034355266));
+        globalBakeryList.add(new Bakery("아베베베이커리", "제주특별자치도 제주시 동문로 10", 33.51279413077327, 126.52793292526506));;
+        globalBakeryList.add(new Bakery("어머니빵집", "제주특별자치도 제주시 연동 도령로 103", 33.491593428733474, 126.48890790603807));
+        globalBakeryList.add(new Bakery("르에스까르고", "제주특별자치도 제주시 월랑로2길 29", 33.488387042817735, 126.48159332927656));
+        globalBakeryList.add(new Bakery("애월빵공장&카페", "제주특별자치도 제주시 애월읍 금성5길 44-9", 33.448549889099276, 126.30142618872887));
+        globalBakeryList.add(new Bakery("타임투베이크", "경기도 안양시 만안구 안양동 성결대학로23번길 65 1층", 37.38080553546558, 126.92995885890849));
+        globalBakeryList.add(new Bakery("하츠베이커리", "서울특별시 송파구 중대로 210", 37.5004194637202, 127.12712816303407));
+        globalBakeryList.add(new Bakery("하츠베이커리 x 센터커피점", "경기도 안양시 동안구 관양2동 관악대로 450", 37.40409567032979, 126.97246781521271));
+        globalBakeryList.add(new Bakery("이성당 롯데몰수지점", "경기도 용인시 수지구 성복동 61-6", 37.31316049237615, 127.081154800505));
+        globalBakeryList.add(new Bakery("몽꺄도", "서울특별시 중구 신당동 동호로18길 13", 37.55823705904145, 127.00918022481774));
+        globalBakeryList.add(new Bakery("블랑제리 더 플라자", "서울특별시 중구 소공로 119 더 플라자 호텔 LL층", 37.56472571735351, 126.97798315484417));
+        globalBakeryList.add(new Bakery("디어브레드 안암본점", "서울특별시 성북구 안암동 개운사1길 29", 37.5872985596481, 127.0286883112576));
+        globalBakeryList.add(new Bakery("수더분", "서울특별시 마포구 공덕동 백범로 152", 37.54549358831956, 126.94663480663294));
+        globalBakeryList.add(new Bakery("서울앵무새", "서울특별시 성동구 성수동1가 서울숲9길 3", 37.54828944762756, 127.04353266547022));
+        globalBakeryList.add(new Bakery("심세정", "서울특별시 중구 흥인동 퇴계로 409-11", 37.566029531369324, 127.0170499563962));
+        globalBakeryList.add(new Bakery("보보찰리베이커리 제기동점", "서울특별시 동대문구 용신동 왕산로 110", 37.577973571801195, 127.03552925405849));
+        globalBakeryList.add(new Bakery("빵선생", "경기도 과천시 중앙로 389", 37.44880129936233, 126.99758135009726));
+        globalBakeryList.add(new Bakery("베이커스퍼센트", "서울특별시 종로구 누하동 필운대로2길 3", 37.57824243267839, 126.96943148227327));
+        globalBakeryList.add(new Bakery("몽쥬 빠티세리", "서울특별시 성동구 이태원2동 왕십리로 410 E동 104호", 37.539551056973366, 126.99537709036635));
+        globalBakeryList.add(new Bakery("블랑제리", "경기도 용인시 수지구 성복1로 106 벽산프라자", 37.31673654796295, 127.06813381164015));
+        globalBakeryList.add(new Bakery("크라상점 수지상현점", "경기도 용인시 수지구 만현로 110 B동 105호", 37.30665240759278, 127.0848815051436));
+        globalBakeryList.add(new Bakery("근대골목도나스&커피 롯데몰수지점", "경기도 용인시 수지구 성복2로 10 롯데몰 수지점 4층", 37.3130130810344, 127.08135170154992));
+
+
     }
 }
