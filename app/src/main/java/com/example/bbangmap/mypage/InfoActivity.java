@@ -1,4 +1,4 @@
-package com.example.bbangmap;
+package com.example.bbangmap.mypage;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 
 import com.bumptech.glide.Glide;
+import com.example.bbangmap.R;
 
 public class InfoActivity extends AppCompatActivity {
     @Override

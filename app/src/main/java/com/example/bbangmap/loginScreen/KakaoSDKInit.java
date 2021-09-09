@@ -1,4 +1,4 @@
-package com.example.bbangmap;
+package com.example.bbangmap.loginScreen;
 
 import android.app.Application;
 import com.kakao.auth.KakaoSDK;

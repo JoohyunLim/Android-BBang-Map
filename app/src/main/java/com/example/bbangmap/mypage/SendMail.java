@@ -1,7 +1,6 @@
-package com.example.bbangmap;
+package com.example.bbangmap.mypage;
 
 import android.content.Context;
-import android.view.Gravity;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import javax.mail.MessagingException;
@@ -16,7 +15,7 @@ public class SendMail extends AppCompatActivity {
     public int sendSecurityCode(Context context, String sendTo, String sentFrom, String content) {
         try {
             GMailSender gMailSender = new GMailSender(user, password);
-            gMailSender.sendMail("빵맵에서 보낸 문의 메일입니다.", "보냄: "+sentFrom+"\n\n"+content, sendTo);
+            gMailSender.sendMail("<빵맵에서 보낸 문의 메일입니다.>", "보냄(sender): "+sentFrom+"\n\n"+"내용(content): \n"+content, sendTo);
             return 0;
         } catch (SendFailedException e) {
             Toast.makeText(context, "이메일 형식이 잘못되었습니다.", Toast.LENGTH_SHORT).show();

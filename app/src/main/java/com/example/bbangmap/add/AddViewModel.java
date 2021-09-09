@@ -1,4 +1,4 @@
-package com.example.bbangmap.ui.add;
+package com.example.bbangmap.add;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

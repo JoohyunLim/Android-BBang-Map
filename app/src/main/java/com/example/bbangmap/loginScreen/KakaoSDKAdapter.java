@@ -1,4 +1,4 @@
-package com.example.bbangmap;
+package com.example.bbangmap.loginScreen;
 import android.content.Context;
 import com.kakao.auth.ApprovalType;
 import com.kakao.auth.AuthType;

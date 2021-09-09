@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.mypage.MyPageFragment">
+    tools:context=".mypage.MyPageFragment">
 
     <ImageView
         android:id="@+id/imageView"
@@ -49,7 +49,7 @@
         android:layout_width="330dp"
         android:layout_height="170dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/txtfield"
+        android:background="@drawable/txtfield2"
         android:ems="10"
         android:hint="문의하실 내용을 작성해주세요."
         android:inputType="textMultiLine"
@@ -82,7 +82,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:ems="10"
-        android:hint="이메일 주소를 입력해주세요."
+        android:hint="답장 받을 이메일 주소를 입력해주세요."
         android:inputType="textEmailAddress"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/qnaText"

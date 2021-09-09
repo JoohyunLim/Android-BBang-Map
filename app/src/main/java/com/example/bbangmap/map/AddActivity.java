@@ -1,4 +1,4 @@
-package com.example.bbangmap;
+package com.example.bbangmap.map;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -20,7 +20,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 
-import com.example.bbangmap.ui.map.MapFragment;
+import com.example.bbangmap.R;
 
 public class AddActivity extends AppCompatActivity {
     private PopupWindow mPopupWindow;

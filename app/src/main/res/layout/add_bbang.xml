@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.mypage.MyPageFragment">
+    tools:context=".mypage.MyPageFragment">
 
 
     <ImageView
@@ -49,8 +49,8 @@
         android:id="@+id/nameTextField"
         android:layout_width="250dp"
         android:layout_height="45dp"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/txtfield"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/txtfield2"
         android:ems="10"
         android:hint="빵집의 이름을 알려주세요."
         android:inputType="textPersonName"
@@ -58,17 +58,17 @@
         android:paddingRight="10dp"
         android:textAlignment="center"
         android:textColorHint="#59000000"
-        app:layout_constraintBottom_toTopOf="@+id/qnaText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textButton" />
 
     <EditText
         android:id="@+id/qnaText"
         android:layout_width="250dp"
         android:layout_height="45dp"
-        android:layout_marginBottom="85dp"
-        android:background="@drawable/txtfield"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/txtfield2"
         android:ems="10"
         android:hint="빵집의 주소를 알려주세요."
         android:inputType="textPersonName"
@@ -76,10 +76,10 @@
         android:paddingRight="10dp"
         android:textAlignment="center"
         android:textColorHint="#59000000"
-        app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameTextField" />
 
     <Button
         android:id="@+id/textButton"

@@ -19,11 +19,9 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.bbangmap.databinding.ActivityMainBinding;
 import com.naver.maps.map.NaverMapSdk;
-
+//MAIN
 public class SecondActivity extends AppCompatActivity
 {
-
-
     private ActivityMainBinding binding;
     private BottomNavigationView mBtmView;
     private int mMenuId;
@@ -45,7 +43,7 @@ public class SecondActivity extends AppCompatActivity
             BottomNavigationView navView = findViewById(R.id.nav_view);
 
             AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                    R.id.navigation_home, R.id.navigation_add, R.id.navigation_map, R.id.navigation_my_page)
+                    R.id.navigation_map, R.id.navigation_my_page)
                     .build();
             NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
             NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);

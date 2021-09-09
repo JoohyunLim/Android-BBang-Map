@@ -2,9 +2,11 @@ package com.example.bbangmap;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.bbangmap.loginScreen.MainActivity;
+
 public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {

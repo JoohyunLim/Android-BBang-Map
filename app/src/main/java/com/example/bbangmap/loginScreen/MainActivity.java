@@ -1,4 +1,4 @@
-package com.example.bbangmap;
+package com.example.bbangmap.loginScreen;
 
 
 import android.content.Context;
@@ -16,6 +16,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.example.bbangmap.R;
+import com.example.bbangmap.SecondActivity;
 import com.example.bbangmap.databinding.ActivityMainBinding;
 import com.kakao.auth.ApiErrorCode;
 import com.kakao.auth.ISessionCallback;

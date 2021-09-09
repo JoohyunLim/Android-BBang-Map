@@ -1,4 +1,4 @@
-package com.example.bbangmap.ui.mypage;
+package com.example.bbangmap.mypage;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -6,20 +6,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,18 +20,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.room.Room;
 
-import com.example.bbangmap.InfoActivity;
-import com.example.bbangmap.MainActivity;
-import com.example.bbangmap.QnaActivity;
+import com.example.bbangmap.loginScreen.MainActivity;
 import com.example.bbangmap.R;
 
 import com.example.bbangmap.SecondActivity;
-import com.example.bbangmap.SendMail;
 import com.example.bbangmap.databinding.FragmentMypageBinding;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.kakao.sdk.user.UserApiClient;
-import com.kakao.sdk.user.model.Account;
+import com.example.bbangmap.map.database.AppDatabase;
+import com.example.bbangmap.map.database.Bakery;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
@@ -101,6 +91,7 @@ public class MyPageFragment extends Fragment {
                 }
             }
         }) ;
+
 
         return root;
     }

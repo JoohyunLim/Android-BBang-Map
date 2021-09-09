@@ -1,4 +1,4 @@
-package com.example.bbangmap.ui.home;
+package com.example.bbangmap.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,9 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.bbangmap.R;
 import com.example.bbangmap.databinding.FragmentHomeBinding;
-import com.example.bbangmap.ui.home.HomeViewModel;
 
 public class HomeFragment extends Fragment {
 
