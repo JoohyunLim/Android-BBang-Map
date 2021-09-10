@@ -53,6 +53,8 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
+    implementation 'com.google.android.material:material:1.2.1'
+
     implementation "com.kakao.sdk:v2-user:2.7.0" // 카카오 로그인
     implementation group: 'com.kakao.sdk', name: 'usermgmt', version: '1.30.0'
     annotationProcessor 'androidx.room:room-compiler:2.2.6'

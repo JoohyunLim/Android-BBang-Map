@@ -39,6 +39,10 @@
         </activity>
 
         <activity
+            android:name=".map.BottomSheetActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".loginScreen.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"

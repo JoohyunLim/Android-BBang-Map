@@ -3,6 +3,7 @@ package com.example.bbangmap;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -18,6 +19,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.bbangmap.databinding.ActivityMainBinding;
+import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMapSdk;
 //MAIN
 public class SecondActivity extends AppCompatActivity
@@ -76,4 +78,5 @@ public class SecondActivity extends AppCompatActivity
         super.onBackPressed();
         ActivityCompat.finishAffinity(this); //아애 앱 종료하는 방법 Activity를 싹 끄게 하는 법
     }
+
 }

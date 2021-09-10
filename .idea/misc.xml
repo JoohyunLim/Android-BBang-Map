@@ -10,16 +10,18 @@
         <entry key="..\:/Users/14Z980-GA50K/AndroidStudioProjects/BBangMap/app/src/main/res/drawable/ic_location.xml" value="0.1" />
         <entry key="..\:/Users/14Z980-GA50K/AndroidStudioProjects/BBangMap/app/src/main/res/drawable/ic_menu.xml" value="0.1" />
         <entry key="..\:/Users/14Z980-GA50K/AndroidStudioProjects/BBangMap/app/src/main/res/drawable/icon_add.xml" value="0.1" />
+        <entry key="..\:/Users/14Z980-GA50K/AndroidStudioProjects/BBangMap/app/src/main/res/drawable/infofield.xml" value="0.1" />
         <entry key="..\:/Users/14Z980-GA50K/AndroidStudioProjects/BBangMap/app/src/main/res/drawable/txtfield.xml" value="0.1" />
         <entry key="..\:/Users/14Z980-GA50K/AndroidStudioProjects/BBangMap/app/src/main/res/drawable/txtfield2.xml" value="0.1" />
         <entry key="..\:/Users/14Z980-GA50K/AndroidStudioProjects/BBangMap/app/src/main/res/layout/activity_daum_web_view.xml" value="0.15534420289855072" />
-        <entry key="..\:/Users/14Z980-GA50K/AndroidStudioProjects/BBangMap/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/14Z980-GA50K/AndroidStudioProjects/BBangMap/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/14Z980-GA50K/AndroidStudioProjects/BBangMap/app/src/main/res/layout/add_bbang.xml" value="0.22" />
         <entry key="..\:/Users/14Z980-GA50K/AndroidStudioProjects/BBangMap/app/src/main/res/layout/add_popup.xml" value="0.22" />
         <entry key="..\:/Users/14Z980-GA50K/AndroidStudioProjects/BBangMap/app/src/main/res/layout/android_actionbar_toolbar_spinner_example_layout.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/14Z980-GA50K/AndroidStudioProjects/BBangMap/app/src/main/res/layout/bottom_sheet.xml" value="0.13333333333333333" />
         <entry key="..\:/Users/14Z980-GA50K/AndroidStudioProjects/BBangMap/app/src/main/res/layout/fragment_add.xml" value="0.14666666666666667" />
         <entry key="..\:/Users/14Z980-GA50K/AndroidStudioProjects/BBangMap/app/src/main/res/layout/fragment_home.xml" value="0.16666666666666666" />
-        <entry key="..\:/Users/14Z980-GA50K/AndroidStudioProjects/BBangMap/app/src/main/res/layout/fragment_map.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/14Z980-GA50K/AndroidStudioProjects/BBangMap/app/src/main/res/layout/fragment_map.xml" value="0.1" />
         <entry key="..\:/Users/14Z980-GA50K/AndroidStudioProjects/BBangMap/app/src/main/res/layout/fragment_mypage.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/14Z980-GA50K/AndroidStudioProjects/BBangMap/app/src/main/res/layout/info.xml" value="0.236096537250787" />
         <entry key="..\:/Users/14Z980-GA50K/AndroidStudioProjects/BBangMap/app/src/main/res/layout/login.xml" value="0.16666666666666666" />
