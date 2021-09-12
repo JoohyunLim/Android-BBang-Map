@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.InputType;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
 import android.view.MenuItem;

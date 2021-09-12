@@ -1,15 +1,23 @@
 package com.example.bbangmap.map;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PointF;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +32,8 @@ import com.example.bbangmap.map.database.AppDatabase;
 import com.example.bbangmap.map.database.Bakery;
 import com.example.bbangmap.map.database.BakeryDao;
 import com.example.bbangmap.map.BottomSheetActivity;
+import com.example.bbangmap.mypage.QnaActivity;
+import com.example.bbangmap.mypage.SendMail;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.naver.maps.geometry.LatLng;
@@ -71,7 +81,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Overlay
         mapView =  (MapView) root.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
-
 
         locationSource =
                 new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
@@ -195,6 +204,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Overlay
             nameView.setText(((Marker) overlay).getCaptionText());
             addressView.setText(((Marker) overlay).getSubCaptionText());
 
+            editInfoForm();
+
             View bottomView = (View) getActivity().findViewById(R.id.bottom_sheet);
             bottomView.setVisibility(View.VISIBLE);
 
@@ -202,13 +213,37 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Overlay
             CameraUpdate cameraUpdate = CameraUpdate.scrollAndZoomTo(
                     new LatLng(((Marker) overlay).getPosition().latitude, ((Marker) overlay).getPosition().longitude), 16)
                     .animate(CameraAnimation.Fly, 700);
-
             naverMap.moveCamera(cameraUpdate);
 
             return true;
         }
-
         return false;
+    }
+
+    //오류수정 요청하기 버튼
+    public void editInfoForm(){
+        Button editTextButton = (Button) getActivity().findViewById(R.id.editTextButton);
+        editTextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String[] problems = new String[] {"주소가 잘못되었습니다.", "폐업한 가게입니다.", "기타"};
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("어떤 문제가 있나요?");
+                builder. setSingleChoiceItems(problems, -1, new DialogInterface.OnClickListener() {
+                    @Override public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getActivity(), problems[which], Toast.LENGTH_SHORT).show(); }
+                });
+                builder.setPositiveButton("제출", null);
+                AlertDialog dialog1 = builder.create();
+                dialog1.setOnShowListener( new DialogInterface.OnShowListener() {
+                    @Override public void onShow(DialogInterface arg0) {
+                        dialog1.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+                    }
+                });
+                dialog1.show();
+            }
+        });
     }
 
     public void onRequestPermissionResult(int requestCode,
@@ -237,9 +272,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Overlay
 //        mBakeryDao.delete(deleteBakery);
 //    }
 
-
     public void setBakeryList(){
-
         globalBakeryList.add(new Bakery("디어필립", "경기도 용인시 수지구 수지로296번길 51-5", 37.321672038986314, 127.09446862858634));
         globalBakeryList.add(new Bakery("본누벨베이커리", "경기도 용인시 수지구 수지로 20", 37.30483867346377, 127.07520066093477));
         globalBakeryList.add(new Bakery("오봉베르", "경기도 수원시 영통구 센트럴파크로127번길 142", 37.293913587307586, 127.05516634679148));
@@ -249,7 +282,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Overlay
         globalBakeryList.add(new Bakery("올바른단팥빵&고로케", "경기도 용인시 기흥구 보정로 115 우영프라자", 37.31990920240392, 127.11530384331465));
         globalBakeryList.add(new Bakery("블랑제리", "경기도 용인시 수지구 성복1로 106 벽산프라자", 37.31673654796295, 127.06813381164015));
         globalBakeryList.add(new Bakery("크라상점 수지상현점", "경기도 용인시 수지구 만현로 110 B동 105호", 37.30665240759278, 127.0848815051436));
-       // globalBakeryList.add(new Bakery("근대골목도나스&커피 롯데몰수지점", "경기도 용인시 수지구 성복2로 10 롯데몰 수지점 4층", 37.3130130810344, 127.08135170154992));
         globalBakeryList.add(new Bakery("아일랜드15", "경기도 용인시 수지구 광교호수로378번길 25", 37.29636639148425, 127.08036898380995));
         globalBakeryList.add(new Bakery("델리봉봉", "경기도 용인시 수지구 광교중앙로295번길 3", 37.29641146855036, 127.06829652117655));
         globalBakeryList.add(new Bakery("뺑오르방 광교카페거리점", "경기도 수원시 영통구 센트럴파크로128번길 105", 37.29489629080948, 127.05667296040775));
@@ -354,8 +386,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Overlay
         globalBakeryList.add(new Bakery("만동제과", "강원도 강릉시 금성로 6 1층", 37.755117787423714, 128.89948705970505));
         globalBakeryList.add(new Bakery("바로방", "강원도 강릉시 경강로 2092", 37.75430333260466, 128.89589578846977));
         globalBakeryList.add(new Bakery("강릉빵다방", "강원도 강릉시 남강초교1길 24", 37.769008282541385, 128.91807330449475));
-
-
     }
 
 }
