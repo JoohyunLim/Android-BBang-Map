@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.InputType;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -72,22 +71,22 @@ public class QnaActivity extends AppCompatActivity
             });
 
         submit.setOnClickListener(new View.OnClickListener() {
-            Pattern pattern = Patterns.EMAIL_ADDRESS;
+            final Pattern pattern = Patterns.EMAIL_ADDRESS;
             @Override
             public void onClick(View view) {
-                if (email.getText().toString().equals("") || email.getText().toString() == null){
+                if (email.getText().toString().equals("")){
                     Toast toast = Toast.makeText(getApplicationContext(), "이메일 주소를 입력해주세요.", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.TOP, 0, 130);
                     toast.show();
-                } else if (qnatext.getText().toString().equals("") || qnatext.getText().toString() == null){
+                } else if (qnatext.getText().toString().equals("")){
                     Toast toast = Toast.makeText(getApplicationContext(), "문의 내용을 입력해주세요.", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.TOP, 0, 130);
                     toast.show();
-                } else if((pattern.matcher(email.getText().toString()).matches())==false) {
+                } else if(!(pattern.matcher(email.getText().toString()).matches())) {
                     Toast toast = Toast.makeText(getApplicationContext(), "잘못된 이메일 형식입니다.", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.TOP, 0, 130);
                     toast.show();
-                } else if(checkBox.isChecked()==false) {
+                } else if(!checkBox.isChecked()) {
                     Toast toast = Toast.makeText(getApplicationContext(), "개인정보 수집 및 이용 동의 필수", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.TOP, 0, 130);
                     toast.show();
@@ -103,7 +102,6 @@ public class QnaActivity extends AppCompatActivity
                 .permitDiskWrites()
                 .permitNetwork().build());
 
-
         // setup the alert builder
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("제출하시겠습니까?");
@@ -115,9 +113,8 @@ public class QnaActivity extends AppCompatActivity
 
                 //이메일전송
                 SendMail mailServer = new SendMail();
-                int ret = mailServer.sendSecurityCode(getApplicationContext(), "jjuha.dev@gmail.com",
+                int ret = mailServer.sendSecurityCode(getApplicationContext(), "[🍞빵맵🍞 문의하기]", "jjuha.dev@gmail.com",
                         email.getText().toString(), qnatext.getText().toString());
-
 
                 if(ret==0){
                     qnatext.setText(null);
@@ -137,17 +134,14 @@ public class QnaActivity extends AppCompatActivity
                     toast.setGravity(Gravity.TOP, 0, 130);
                     toast.show();
                 } else if(ret==3){
-                    Toast toast = Toast.makeText(getApplicationContext(), "전송 실패! 다시 시도해주세요.", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(getApplicationContext(), "전송 실패! 잠시 후 다시 시도해주세요.", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.TOP, 0, 130);
                     toast.show();
                 }
 
-
                 dialog.dismiss();
             }
         });
-
-        //builder.setPositiveButton("네", null);
         builder.setNegativeButton("아니오", null);
         AlertDialog dialog = builder.create();
 
@@ -162,13 +156,12 @@ public class QnaActivity extends AppCompatActivity
 
     //메뉴 뒤로가기 클릭 시 이전 화면으로 이동
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                Intent parentIntent = NavUtils.getParentActivityIntent(this);
-                parentIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(parentIntent);
-                finish();
-                return true;
+        if (item.getItemId() == android.R.id.home){
+            Intent parentIntent = NavUtils.getParentActivityIntent(this);
+            parentIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(parentIntent);
+            finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -11,11 +11,16 @@ public class SendMail extends AppCompatActivity {
     String password = "BBangs01!"; // 보내는 계정의 pw
 
 
-
-    public int sendSecurityCode(Context context, String sendTo, String sentFrom, String content) {
+//문의하기 폼
+    public int sendSecurityCode(Context context, String subject, String sendTo, String sentFrom, String content) {
         try {
             GMailSender gMailSender = new GMailSender(user, password);
-            gMailSender.sendMail("<빵맵에서 보낸 문의 메일입니다.>", "보냄(sender): "+sentFrom+"\n\n"+"내용(content): \n"+content, sendTo);
+            //문의하기폼
+            if(sentFrom!=null){
+                gMailSender.sendMail(subject, "보냄(sender): "+sentFrom+"\n\n"+"내용(content): \n"+content, sendTo);
+            } else if(sentFrom==null){ //정보수정요청 폼
+                gMailSender.sendMail(subject, "내용(content): \n\n"+content, sendTo);
+            }
             return 0;
         } catch (SendFailedException e) {
             Toast.makeText(context, "이메일 형식이 잘못되었습니다.", Toast.LENGTH_SHORT).show();

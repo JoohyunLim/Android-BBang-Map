@@ -5,36 +5,27 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PointF;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.StrictMode;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.room.Room;
 
 import com.example.bbangmap.R;
 import com.example.bbangmap.databinding.FragmentMapBinding;
 import com.example.bbangmap.map.database.AppDatabase;
 import com.example.bbangmap.map.database.Bakery;
 import com.example.bbangmap.map.database.BakeryDao;
-import com.example.bbangmap.map.BottomSheetActivity;
-import com.example.bbangmap.mypage.QnaActivity;
 import com.example.bbangmap.mypage.SendMail;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.CameraAnimation;
@@ -43,18 +34,12 @@ import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
-import com.naver.maps.map.UiSettings;
-import com.naver.maps.map.overlay.InfoWindow;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.Overlay;
 import com.naver.maps.map.overlay.OverlayImage;
 import com.naver.maps.map.util.FusedLocationSource;
-import com.naver.maps.map.widget.LocationButtonView;
-import com.naver.maps.map.widget.ZoomControlView;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback, Overlay.OnClickListener {
 
@@ -204,7 +189,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Overlay
             nameView.setText(((Marker) overlay).getCaptionText());
             addressView.setText(((Marker) overlay).getSubCaptionText());
 
-            editInfoForm();
+            editInfoForm(((Marker) overlay).getCaptionText());
 
             View bottomView = (View) getActivity().findViewById(R.id.bottom_sheet);
             bottomView.setVisibility(View.VISIBLE);
@@ -221,24 +206,61 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Overlay
     }
 
     //오류수정 요청하기 버튼
-    public void editInfoForm(){
+    public void editInfoForm(String bakeryName){
         Button editTextButton = (Button) getActivity().findViewById(R.id.editTextButton);
         editTextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final String[] problems = new String[] {"주소가 잘못되었습니다.", "폐업한 가게입니다.", "기타"};
+                final String[] selectedProblem = new String[1];
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("어떤 문제가 있나요?");
-                builder. setSingleChoiceItems(problems, -1, new DialogInterface.OnClickListener() {
+                builder.setSingleChoiceItems(problems, -1, new DialogInterface.OnClickListener() {
                     @Override public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getActivity(), problems[which], Toast.LENGTH_SHORT).show(); }
+                        Toast.makeText(getActivity(), "["+bakeryName+"] "+problems[which], Toast.LENGTH_SHORT).show();
+                        selectedProblem[0] = problems[which];
+                    }
                 });
-                builder.setPositiveButton("제출", null);
+
+                StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                        .permitDiskReads()
+                        .permitDiskWrites()
+                        .permitNetwork().build());
+
+                builder.setNegativeButton("취소", null);
+                builder.setPositiveButton("제출", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // TODO Auto-generated method stub
+                        if(selectedProblem[0] != null){
+
+                            //이메일전송
+                            SendMail mailServer1 = new SendMail();
+                            int ret = mailServer1.sendSecurityCode(getActivity().getApplicationContext(), "[🍞빵맵🍞 정보수정요청]", "jjuha.dev@gmail.com",
+                                    null,"["+bakeryName+"] "+ selectedProblem[0]);
+
+                            if(ret==0){
+                                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "제출되었습니다.", Toast.LENGTH_LONG);
+                                toast.setGravity(Gravity.TOP, 0, 130);
+                                toast.show();
+                            } else if(ret==2){
+                                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "전송 실패! 인터넷 연결 상태를 확인해주세요.", Toast.LENGTH_LONG);
+                                toast.setGravity(Gravity.TOP, 0, 130);
+                                toast.show();
+                            } else if(ret==3){
+                                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "전송 실패! 잠시 후 다시 시도해주세요.", Toast.LENGTH_LONG);
+                                toast.setGravity(Gravity.TOP, 0, 130);
+                                toast.show();
+                            }
+                            dialog.dismiss();
+                        }
+                    }
+                });
                 AlertDialog dialog1 = builder.create();
                 dialog1.setOnShowListener( new DialogInterface.OnShowListener() {
                     @Override public void onShow(DialogInterface arg0) {
                         dialog1.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+                        dialog1.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
                     }
                 });
                 dialog1.show();
@@ -347,7 +369,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, Overlay
         globalBakeryList.add(new Bakery("쟝블랑제리 이수점", "서울특별시 동작구 동작대로23길 8", 37.484348370397115, 126.98131278184597));
         globalBakeryList.add(new Bakery("쟝블랑제리", "서울특별시 관악구 낙성대역길 8", 37.47706045254908, 126.96192799579167));
         globalBakeryList.add(new Bakery("아티장베이커스 본점", "서울특별시 강남구 논현로105길 8", 37.506053480717505, 127.03363034355266));
-        globalBakeryList.add(new Bakery("아베베베이커리", "제주특별자치도 제주시 동문로 10", 33.51279413077327, 126.52793292526506));;
+        globalBakeryList.add(new Bakery("아베베베이커리", "제주특별자치도 제주시 동문로 10", 33.51279413077327, 126.52793292526506));
         globalBakeryList.add(new Bakery("어머니빵집", "제주특별자치도 제주시 연동 도령로 103", 33.491593428733474, 126.48890790603807));
         globalBakeryList.add(new Bakery("르에스까르고", "제주특별자치도 제주시 월랑로2길 29", 33.488387042817735, 126.48159332927656));
         globalBakeryList.add(new Bakery("애월빵공장&카페", "제주특별자치도 제주시 애월읍 금성5길 44-9", 33.448549889099276, 126.30142618872887));

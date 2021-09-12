@@ -19,6 +19,9 @@
     <string name="format_map_click">format_map_click</string>
     <string name="format_map_long_click">format_map_long_click</string>
     <string name="kakaoApi">d4781d1ac5afbae6894685a55e64ccbc</string>
+    <string name="editTextButton">정보 수정 요청하기</string>
+    <string name="bName">빵맵 베이커리</string>
+    <string name="bAddress">서울특별시 빵맵구 빵맵로</string>
 
 
     <string-array name="spinner_data">
